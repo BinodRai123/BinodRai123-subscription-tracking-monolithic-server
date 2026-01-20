@@ -1,7 +1,21 @@
 import { Router } from "express";
 
-const subscriptionRoute = Router();
+const subscriptionRouter = Router();
 
-subscriptionRoute.post("/", (req, res) => res.send({ title: "new subscription created" }));
+subscriptionRouter.get("/", (req, res) => res.send({ title: "get all subscription" }));
 
-export default subscriptionRoute;
+subscriptionRouter.get("/:id", (req, res) => res.send({ title: "get subscription by id" }));
+
+subscriptionRouter.post("/", (req, res) => res.send({ title: "create new subscription created" }));
+
+subscriptionRouter.put("/:id", (req, res) => res.send({ title: "update subscritiopn by id" }));
+
+subscriptionRouter.delete("/:id", (req, res) => res.send({ title: "delete subscription" }));
+
+subscriptionRouter.get("/user/:id", (req, res) => res.send({ title: "get all user subscription" }));
+
+subscriptionRouter.put("/:id/cancel", (req, res) => res.send({ title: "cancel subscription subscription" }));
+
+subscriptionRouter.get("/upcoming-renewals", (req, res) => res.send({ title: "get upcoming renewals" }));
+
+export default subscriptionRouter;
