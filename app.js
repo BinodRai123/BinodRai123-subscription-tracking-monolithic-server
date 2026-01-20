@@ -4,24 +4,36 @@ import ConnectToDB from "./database/mongodb.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
 import cookieParser from "cookie-parser";
 
-//Importing "user, subscritipn , auth" Router
+//======= application routes imports ======== //
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import subscriptionRouter from "./routes/subscription.route.js";
 
 const app = express(); //enabled the server
-//it helps to parse the incoming requests and puts the parsed data in req.body
+
+// ======== express middlewares ========= //
+// 1. Handle JSON data
+// This allows your server to read JSON sent in the "body" of a request.
+// Without this, req.body will be 'undefined'.
 app.use(express.json());
-//it helps to parse the incoming requests with urlencoded payloads
+
+// 2. Handle Form data
+// This allows your server to read data sent from standard HTML forms.
+// 'extended: false' means it uses a simple library to parse basic key-value pairs.
 app.use(express.urlencoded({ extended: false }));
-// it helps to parse the cookie from the request headers
+
+// 3. Handle Cookies
+// This parses the "Cookie" header and puts the data into 'req.cookies'.
+// It allows you to easily read things like login tokens stored in the browser.
 app.use(cookieParser());
 
-//applying router in api
+// ======== applying the routes to the application ========= //
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/subscriptions", subscriptionRouter);
 
+// Express only comes here if someone calls next(err) above
+// if any error occur in the above routes then it will be handle here
 app.use(errorMiddleware);
 
 app.listen(PORT, async () => {
