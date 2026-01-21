@@ -12,19 +12,16 @@ import subscriptionRouter from "./routes/subscription.route.js";
 const app = express(); //enabled the server
 
 // ======== express middlewares ========= //
+
 // 1. Handle JSON data
-// This allows your server to read JSON sent in the "body" of a request.
 // Without this, req.body will be 'undefined'.
 app.use(express.json());
 
 // 2. Handle Form data
 // This allows your server to read data sent from standard HTML forms.
-// 'extended: false' means it uses a simple library to parse basic key-value pairs.
 app.use(express.urlencoded({ extended: false }));
 
 // 3. Handle Cookies
-// This parses the "Cookie" header and puts the data into 'req.cookies'.
-// It allows you to easily read things like login tokens stored in the browser.
 app.use(cookieParser());
 
 // ======== applying the routes to the application ========= //
