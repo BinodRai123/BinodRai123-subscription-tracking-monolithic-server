@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import subscriptionRouter from "./routes/subscription.route.js";
+import arcjetMiddleware from "./middlewares/arcjet.middleware.js";
 
 const app = express(); //enabled the server
 
@@ -23,6 +24,8 @@ app.use(express.urlencoded({ extended: false }));
 
 // 3. Handle Cookies
 app.use(cookieParser());
+
+app.use(arcjetMiddleware);
 
 // ======== applying the routes to the application ========= //
 app.use("/api/v1/users", userRouter);

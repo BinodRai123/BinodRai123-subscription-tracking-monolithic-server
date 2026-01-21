@@ -18,7 +18,7 @@ export const getUsers = async (req, res, next) => {
 //Get single User
 export const getUser = async (req, res, next) => {
    try {
-      const user = await User.findById(req.params.id).select("-password");
+      const user = req.user;
 
       if (!user) {
          const error = new Error("user doesn't exist");
