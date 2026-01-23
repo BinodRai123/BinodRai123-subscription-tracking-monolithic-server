@@ -15,12 +15,15 @@ const subscriptionSchema = new mongoose.Schema(
          required: [true, "price should be given"],
          min: [0, "price must be greater than 0"],
          max: [1000, "price must be less than 1000"],
+         trim: true,
       },
+      // In subscription.model.js
       currency: {
          type: String,
          required: [true, "currency must be given "],
-         enum: ["USD", "RS", "EUR"],
+         enum: ["USD", "RS", "EUR", "NEP"], // Must include "NEP" if it is the default
          default: "NEP",
+         trim: true,
       },
       frequency: {
          type: String,
@@ -28,7 +31,7 @@ const subscriptionSchema = new mongoose.Schema(
       },
       category: {
          type: String,
-         enum: ["sports", "news", "entertainment", "lifestyle", "finance", "other"],
+         enum: ["sports", "news", "entertainment", "lifestyle", "finance", "education", "other"],
       },
       paymentMethod: {
          type: String,
@@ -71,9 +74,9 @@ const subscriptionSchema = new mongoose.Schema(
    { timestamps: true },
 );
 
-subscriptionSchema.pre("save", function (next) {
-   //Auto-calculate renewal date if not provided
-   if (!this.renewalDate) {
+subscriptionSchema.pre("save", async function () {
+   // 1. Auto-calculate renewal date if not provided
+   if (!this.renewalDate && this.startDate && this.frequency) {
       const renewalPeriods = {
          daily: 1,
          weekly: 7,
@@ -81,20 +84,14 @@ subscriptionSchema.pre("save", function (next) {
          yearly: 365,
       };
 
-      //create a new date object based on startDate
-      //so that we don't modify the original startDate
       this.renewalDate = new Date(this.startDate);
-
-      // Add the appropriate number of days based on frequency
-      this.renewalDate.setDate(this.renewalDate.getDate() + renewalPeriods[this.frequency]);
+      this.renewalDate.setDate(this.renewalDate.getDate() + (renewalPeriods[this.frequency] || 0));
    }
 
-   //Auto-update the status if renewal date is passed
+   // 2. Auto-update the status if renewal date is passed
    if (this.renewalDate < new Date()) {
       this.status = "expired";
    }
-
-   next();
 });
 
 const Subscription = mongoose.model("subscription", subscriptionSchema);

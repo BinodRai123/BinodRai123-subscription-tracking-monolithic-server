@@ -35,7 +35,7 @@ const authorize = async (req, res, next) => {
 
       next();
    } catch (error) {
-      res.status(401).json({
+      return res.status(401).json({
          message: "unauthorized, token is invalid",
          error: error?.message,
       });
