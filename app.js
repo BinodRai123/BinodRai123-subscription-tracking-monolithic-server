@@ -9,6 +9,7 @@ import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
 import subscriptionRouter from "./routes/subscription.route.js";
 import arcjetMiddleware from "./middlewares/arcjet.middleware.js";
+import workFlowRouter from "./routes/workflow.route.js";
 
 const app = express(); //enabled the server
 
@@ -31,6 +32,7 @@ app.use(arcjetMiddleware);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/subscriptions", subscriptionRouter);
+app.use("/api/v1/workflows", workFlowRouter);
 
 // Express only comes here if someone calls next(err) above
 // if any error occur in the above routes then it will be handle here

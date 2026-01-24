@@ -5,7 +5,6 @@ const subscriptionSchema = new mongoose.Schema(
       name: {
          type: String,
          required: [true, "subscription name is required"],
-         unique: true,
          minLength: 5,
          maxLength: 100,
          trim: true,
